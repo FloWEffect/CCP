@@ -17,7 +17,6 @@ library(e1071)
 
 set.seed(56315)                           # set random seed
 options(scipen = 999)
-memory.limit(size=10000)
 
 ## load the files
 
@@ -98,29 +97,12 @@ wf_bi_l <- lapply(wf_bi_l , transform, frequency = as.integer(frequency))
 wf_tri_l <- lapply(wf_tri_l , transform, frequency = as.integer(frequency))
 wf_quad_l <- lapply(wf_quad_l , transform, frequency = as.integer(frequency))
 
-# backup lists
+# write the lists to file
 
 save(wf_uni_l, file = "wf_uni_l.Rdata")
 save(wf_bi_l, file = "wf_bi_l.Rdata")
 save(wf_tri_l, file = "wf_tri_l.Rdata")
 save(wf_quad_l, file = "wf_quad_l.Rdata")
-
-load("wf_uni_l.Rdata")
-load("wf_bi_l.Rdata")
-load("wf_tri_l.Rdata")
-load("wf_quad_l.Rdata")
-
-wf_uni <- setorder(rbindlist(wf_uni_l)[, .(frequency = sum(frequency)), by = feature], -frequency)
-wf_bi <- setorder(rbindlist(wf_bi_l)[, .(frequency = sum(frequency)), by = feature], -frequency)
-wf_tri <- setorder(rbindlist(wf_tri_l[1:20])[, .(frequency = sum(frequency)), by = feature], -frequency)
-wf_quad <- setorder(rbindlist(wf_quad_l)[, .(frequency = sum(frequency)), by = feature], -frequency)
-
-### Write the data to a file as backup
-
-save(wf_uni, file = "wf_uni.Rdata")
-save(wf_bi, file = "wf_bi.Rdata")
-save(wf_tri, file = "wf_tri.Rdata")
-save(wf_quad, file = "wf_quad.Rdata")
 
 ### clear the workspace
 

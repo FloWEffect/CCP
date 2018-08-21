@@ -34,22 +34,23 @@ nword_predict <- function(winput) {
   unigram <- tail(winput,1)
   la <- 0.4
   
-  quad <- head(arrange(wf_quad[wf_quad$FirstTerms==trigram,c('LastTerm',"p_stu")],-p_stu),10)
-  tri <- head(arrange(wf_tri[wf_tri$FirstTerms==bigram,c('LastTerm',"p_stu")],-p_stu),10)
+  quad <- head(setorder(wf_quad[wf_quad$FirstTerms==trigram,c('LastTerm',"p_stu")],-p_stu),5)
+  tri <- head(setorder(wf_tri[wf_tri$FirstTerms==bigram,c('LastTerm',"p_stu")],-p_stu),5)
   tri$p_stu <- la * tri$p_stu
-  bi <-  head(arrange(wf_bi[wf_bi$FirstTerms==unigram,c('LastTerm',"p_stu")],-p_stu),10)
+  bi <-  head(setorder(wf_bi[wf_bi$FirstTerms==unigram,c('LastTerm',"p_stu")],-p_stu),5)
   bi$p_stu <- la^2 * bi$p_stu
-  uni <- head(wf_uni[,c("LastTerm","p_stu")],20)
+  uni <- head(wf_uni[,c("LastTerm","p_stu")],5)
   uni$p_stu <- la^3 * uni$p_stu
   
-  result <- rbind(quad,tri,bi,uni)
-  result <- aggregate(p_stu~LastTerm, data=result, max)
-  # cat("With Stopwords:")
-  # cat("\n\n")
-  # print(head(arrange(result, -p_stu),5))
-  # cat("Without Stopwords:")
-  # cat("\n\n")
-  # result2 <- filter(result, !(LastTerm %in% stopwords()))
-  # print(head(arrange(result2, -p_stu),5))
-  head(arrange(result, -p_stu),3)$LastTerm
+  result <- rbindlist(list(quad,tri,bi,uni))
+  result <- as.data.table(aggregate(p_stu~LastTerm, data=result, max))
+  head(setorder(result, -p_stu),3)$LastTerm
 }
+
+# cat("With Stopwords:")
+# cat("\n\n")
+# print(head(arrange(result, -p_stu),5))
+# cat("Without Stopwords:")
+# cat("\n\n")
+# result2 <- filter(result, !(LastTerm %in% stopwords()))
+# print(head(arrange(result2, -p_stu),5))
