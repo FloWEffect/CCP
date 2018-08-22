@@ -1,0 +1,35 @@
+Next Word Prediction
+========================================================
+author: Florian Dollak
+date: 2018-08-21
+autosize: true
+
+
+Overview
+========================================================
+
+For more details on authoring R presentations please visit <https://support.rstudio.com/hc/en-us/articles/200486468>.
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+Data preparation
+========================================================
+
+```{r}
+summary(cars)
+```
+
+App Description
+========================================================
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+App Outline
+========================================================
+
+Appendix
+========================================================

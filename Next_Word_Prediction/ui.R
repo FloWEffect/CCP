@@ -9,6 +9,7 @@
 
 library(shiny)
 library(shinythemes)
+library(htmlwidgets)
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
@@ -18,26 +19,18 @@ shinyUI(fluidPage(
   theme = shinytheme("flatly"),
   
   # Application title
-  titlePanel("Next Word Prediction"),
+  
+  h1("Next Word Prediction", align = "center"),
   
   # grid layout
   
   fluidRow(
-    column(12,
-           textInput("caption", "Enter text here:"),
-           fluidRow(
-             column(6,
-                    "Fluid 6",
-                    fluidRow(
-                      column(6, 
-                             "Fluid 6"),
-                      column(6,
-                             "Fluid 6")
-                    )
-             ),
-             column(width = 6,
-                    "Fluid 6")
-           )
+    
+    column(12, align ="center",
+           wellPanel(
+             textInput("predtext", "Enter text here:", width = "60%")
+           )       
     )
   )
+  
 ))
