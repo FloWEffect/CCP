@@ -8,6 +8,7 @@ library(data.table)
 # options
 
 options(scipen = 999)
+memory.limit(32000)
 
 ### create the ngram models
 

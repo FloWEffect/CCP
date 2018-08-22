@@ -52,6 +52,12 @@ en_twitter  <-
   readLines(en_twitter_con, skipNul = T, encoding = "UTF-8")
 close(en_twitter_con)
 
+# read the oanc corpus
+
+oanc_files <- as.list(list.files("./final/OANC/data", pattern = ".*txt$", recursive = T, full.names = T))
+oanc_data <- trimws(unlist(lapply(oanc_files, readLines, skipNul = T, encoding = "UTF-8", warn=FALSE)))
+oanc_data <- oanc_data[oanc_data != ""]
+
 ## Exploratory Analysis
 
 # Word Counts
@@ -92,7 +98,7 @@ colnames(files_en) <-
 
 # create training, validation and test datasets
 
-en_all <- c(en_blogs, en_news, en_twitter)
+en_all <- c(en_blogs, en_news, en_twitter, oanc_data)
 
 n = length(en_all)
 

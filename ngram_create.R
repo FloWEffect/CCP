@@ -17,6 +17,7 @@ library(e1071)
 
 set.seed(56315)                           # set random seed
 options(scipen = 999)
+memory.limit(32000)
 
 ## load the files
 
