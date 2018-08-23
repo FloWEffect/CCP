@@ -24,7 +24,7 @@ shinyServer(function(input, output) {
   
   #### now create a function for finding the best matches
   
-  nword_predict <- function(winput) {
+  nword_predict <- function(winput, sw=TRUE) {
     
     winput <- tail(tokens(tolower(winput),
                           remove_numbers=TRUE,
@@ -39,31 +39,31 @@ shinyServer(function(input, output) {
     unigram <- tail(winput,1)
     la <- 0.4
     
-    quad <- head(setorder(wf_quad[wf_quad$FirstTerms==trigram,c('LastTerm',"p_stu")],-p_stu),5)
-    tri <- head(setorder(wf_tri[wf_tri$FirstTerms==bigram,c('LastTerm',"p_stu")],-p_stu),5)
+    quad <- head(setorder(wf_quad[wf_quad$FirstTerms==trigram,c('LastTerm',"p_stu")],-p_stu),10)
+    tri <- head(setorder(wf_tri[wf_tri$FirstTerms==bigram,c('LastTerm',"p_stu")],-p_stu),10)
     tri$p_stu <- la * tri$p_stu
-    bi <-  head(setorder(wf_bi[wf_bi$FirstTerms==unigram,c('LastTerm',"p_stu")],-p_stu),5)
+    bi <-  head(setorder(wf_bi[wf_bi$FirstTerms==unigram,c('LastTerm',"p_stu")],-p_stu),10)
     bi$p_stu <- la^2 * bi$p_stu
-    uni <- head(wf_uni[,c("LastTerm","p_stu")],5)
+    uni <- head(wf_uni[,c("LastTerm","p_stu")],10)
     uni$p_stu <- la^3 * uni$p_stu
     
     result <- rbindlist(list(quad,tri,bi,uni))
+    result$p_stu <- result$p_stu*100
     result <- as.data.table(aggregate(p_stu~LastTerm, data=result, max))
-    head(setorder(result, -p_stu),3)$LastTerm
+    names(result) <- c("Predicted Word", "Score")
+    r1 <- head(setorder(result, -Score),3)
+    result2 <- filter(result, !(`Predicted Word` %in% stopwords()))
+    r2 <- head(setorder(result2, -Score),3)
+    if (sw == TRUE) r1 else r2
   }
-   
   
+  # predict the next words
   
+  observeEvent(input$predButton,
+        output$prediction <- renderTable(isolate(nword_predict(input$predtext)))
+  )
   
-  output$distPlot <- renderPlot({
-    
-    # generate bins based on input$bins from ui.R
-    x    <- faithful[, 2] 
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
-    
-    # draw the histogram with the specified number of bins
-    hist(x, breaks = bins, col = 'darkgray', border = 'white')
-    
-  })
-  
+  observeEvent(input$predButton,
+               output$prediction_nosw <- renderTable(isolate(nword_predict(input$predtext, sw = F)))
+  )
 })

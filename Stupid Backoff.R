@@ -44,7 +44,7 @@ nword_predict <- function(winput) {
   
   result <- rbindlist(list(quad,tri,bi,uni))
   result <- as.data.table(aggregate(p_stu~LastTerm, data=result, max))
-  head(setorder(result, -p_stu),5)
+  head(setorder(result, -p_stu),3)
 }
 
 # cat("With Stopwords:")

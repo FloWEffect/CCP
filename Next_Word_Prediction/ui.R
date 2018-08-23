@@ -3,7 +3,7 @@
 # run the application by clicking 'Run App' above.
 #
 # Find out more about building applications with Shiny here:
-# 
+#
 #    http://shiny.rstudio.com/
 #
 
@@ -13,7 +13,6 @@ library(htmlwidgets)
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
-  
   # add a theme
   
   theme = shinytheme("flatly"),
@@ -24,13 +23,26 @@ shinyUI(fluidPage(
   
   # grid layout
   
-  fluidRow(
+  fluidRow(column(
+    10, offset = 1,
+    align = "center",
+    wellPanel(
+      textInput("predtext", "Enter text here:", width = "60%"),
+      actionButton("predButton", "Predict next word!")
+    ),
     
-    column(12, align ="center",
-           wellPanel(
-             textInput("predtext", "Enter text here:", width = "60%")
-           )       
-    )
-  )
-  
+    column(8,offset = 2,
+    splitLayout(
+      conditionalPanel("input.predButton",
+                       wellPanel(
+                         h4("All Words", align = "center"),
+                         tableOutput("prediction")
+                       )),
+      conditionalPanel("input.predButton",
+                       wellPanel(
+                         h4("Without Stopwords", align = "center"),
+                         tableOutput("prediction_nosw")
+                       ))
+    ))
+  ))
 ))
