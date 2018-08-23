@@ -45,7 +45,9 @@ if (file.exists("Coursera-SwiftKey.zip") == F)
 
 en_blogs_con <- file("./final/en_US/en_US.blogs.txt", "r")
 en_blogs <-
-  readLines("./final/en_US/en_US.blogs.txt", skipNul = T, encoding = "UTF-8")
+  readLines("./final/en_US/en_US.blogs.txt",
+            skipNul = T,
+            encoding = "UTF-8")
 close(en_blogs_con)
 
 en_news_con <- file("./final/en_US/en_US.news.txt", "r")
@@ -60,6 +62,12 @@ en_twitter_con <- file("./final/en_US/en_US.twitter.txt", "r")
 en_twitter  <-
   readLines(en_twitter_con, skipNul = T, encoding = "UTF-8")
 close(en_twitter_con)
+
+# read the oanc corpus
+
+oanc_files <- as.list(list.files("./final/OANC/data", pattern = ".*txt$", recursive = T, full.names = T))
+oanc_data <- trimws(unlist(lapply(oanc_files, readLines, skipNul = T, encoding = "UTF-8", warn=FALSE)))
+oanc_data <- oanc_data[oanc_data != ""]
 ```
 
 ## Management Summary
@@ -90,12 +98,14 @@ en_news[38000]
 en_blogs_wc <- sum(stri_count_boundaries(en_blogs))
 en_twitter_wc <- sum(stri_count_words(en_twitter))
 en_news_wc <- sum(stri_count_words(en_news))
+oanc_data_wc <- sum(stri_count_words(oanc_data))
 
 # Line Counts
 
 en_blogs_lc <- length(en_blogs)
 en_twitter_lc <- length(en_twitter)
 en_news_lc <- length(en_news)
+oanc_data_lc <- length(oanc_data)
 
 # File Size
 
@@ -103,21 +113,22 @@ en_blogs_fs <- file.size("./final/en_US/en_US.blogs.txt") / 1024 ^ 2
 en_twitter_fs <-
   file.size("./final/en_US/en_US.twitter.txt") / 1024 ^ 2
 en_news_fs <- file.size("./final/en_US/en_US.news.txt") / 1024 ^ 2
-
+oanc_data_fs <- sum(unlist(lapply(oanc_files, FUN = function(x) {file.size(x) / 1024 ^ 2})))
 
 files_en <- data.frame(
-  fileName = c("Blogs", "News", "Twitter"),
+  fileName = c("Blogs", "News", "Twitter", "OANC"),
   fileSize = c(
     round(en_blogs_fs, digits = 2),
     round(en_twitter_fs, digits = 2),
-    round(en_news_fs, digits = 2)
+    round(en_news_fs, digits = 2),
+    round(oanc_data_fs, digits = 2)
   ),
-  lineCount = c(en_blogs_lc, en_twitter_lc, en_news_lc),
-  wordCount = c(en_blogs_wc, en_twitter_wc, en_news_wc)
+  lineCount = c(en_blogs_lc, en_twitter_lc, en_news_lc, oanc_data_lc),
+  wordCount = c(en_blogs_wc, en_twitter_wc, en_news_wc, oanc_data_wc)
 )
 
 colnames(files_en) <-
-  c("Text Source", "Filesize [MB]", "LineCount", "WordCount")
+  c("Filename", "Filesize [MB]", "Linecount", "Wordcount")
 
 kable(files_en)
 ```

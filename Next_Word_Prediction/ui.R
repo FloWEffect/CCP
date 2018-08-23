@@ -40,7 +40,7 @@ shinyUI(fluidPage(
                        )),
       conditionalPanel("input.predButton",
                        wellPanel(
-                         h4("Without Stopwords", align = "center"),
+                         h4("No Stopwords", align = "center"),
                          tableOutput("prediction_nosw")
                        ))
     ))

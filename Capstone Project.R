@@ -65,12 +65,14 @@ oanc_data <- oanc_data[oanc_data != ""]
 en_blogs_wc <- sum(stri_count_boundaries(en_blogs))
 en_twitter_wc <- sum(stri_count_words(en_twitter))
 en_news_wc <- sum(stri_count_words(en_news))
+oanc_data_wc <- sum(stri_count_words(oanc_data))
 
 # Line Counts
 
 en_blogs_lc <- length(en_blogs)
 en_twitter_lc <- length(en_twitter)
 en_news_lc <- length(en_news)
+oanc_data_lc <- length(oanc_data)
 
 # File Size
 
@@ -78,21 +80,24 @@ en_blogs_fs <- file.size("./final/en_US/en_US.blogs.txt") / 1024 ^ 2
 en_twitter_fs <-
   file.size("./final/en_US/en_US.twitter.txt") / 1024 ^ 2
 en_news_fs <- file.size("./final/en_US/en_US.news.txt") / 1024 ^ 2
-
+oanc_data_fs <- sum(unlist(lapply(oanc_files, FUN = function(x) {file.size(x) / 1024 ^ 2})))
 
 files_en <- data.frame(
-  fileName = c("Blogs", "News", "Twitter"),
+  fileName = c("Blogs", "News", "Twitter", "OANC"),
   fileSize = c(
     round(en_blogs_fs, digits = 2),
     round(en_twitter_fs, digits = 2),
-    round(en_news_fs, digits = 2)
+    round(en_news_fs, digits = 2),♣
+    round(oanc_data_fs, digits = 2)
   ),
-  lineCount = c(en_blogs_lc, en_twitter_lc, en_news_lc),
-  wordCount = c(en_blogs_wc, en_twitter_wc, en_news_wc)
+  lineCount = c(en_blogs_lc, en_twitter_lc, en_news_lc, oanc_data_lc),
+  wordCount = c(en_blogs_wc, en_twitter_wc, en_news_wc, oanc_data_wc)
 )
 
 colnames(files_en) <-
   c("Filename", "Filesize [MB]", "Linecount", "Wordcount")
+
+save(files_en, file = "files_en")
 
 ## Corpus Creation
 
