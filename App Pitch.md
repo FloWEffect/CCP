@@ -4,14 +4,14 @@ author: Florian Dollak
 date: 2018-08-21
 autosize: true
 
-This app is part of the Coursera Data Science Specialization Capstone Project as offered by the Johns Hopkins University.
+This app is part of the capstone project of the Coursera Data Science Specialization as offered by the Johns Hopkins University.
 
-The goal of this app is to predict the next word in a string, based on some text input. 
+The goal of this app is to predict the next word in a string based on some text input. 
 
 The Data
 ========================================================
 
-In order to create a comprehensive language model, I've used 80% of the [HC Corpora](https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip) dataset and also the full [OANC](http://www.anc.org/) corpus to get a good representation of american english as it is used on the internet and in everyday language.
+In order to create a comprehensive language model, I've used 80% of the [HC Corpora](https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip) dataset and also the full [OANC](http://www.anc.org/) corpus to get a good representation of American English as it is used on the internet and in everyday language.
 
 
 |Filename | Filesize [MB]| Linecount| Wordcount|
@@ -21,12 +21,12 @@ In order to create a comprehensive language model, I've used 80% of the [HC Corp
 |Twitter  |        196.28|     77259|   2674536|
 |OANC     |         92.26|   1463146|  14728941|
 
-Currently, the focus was exclusively on (american) english, but the general framework can be easily adapted to accomodate other languages as well.
+Currently, the focus was exclusively on (American) English, but the general framework can be easily adapted to accommodate other languages as well.
 
 The Algorithm
 ========================================================
 
-Over the course of development I have implemented various smoothing and discounting techniques to prepare the data properly for prediction. Among the implemented methods were:
+Over the course of development I have implemented and evaluated various smoothing and discounting techniques to prepare the data properly for prediction. Among the implemented methods were:
 
 * Absolute Discounting
 * Good Turing Discounting
@@ -34,16 +34,18 @@ Over the course of development I have implemented various smoothing and discount
 * (Modified) Kneser-Ney Smoothing
 * Stupid BackOff
 
-In the end I decided to increase the amount of data and implement the Stupid Backoff method because the processing and memory load is low and the loss in accurcy is negligible for large amounts of data, compared to modified Kneser-Ney which is considered one of the most efficient smoothing algorithms.
+In the end I decided to increase the amount of training data and implement the Stupid Backoff method because the computational load is low and the loss in accuracy is negligible for large amounts of data compared to Modified-Kneser-Ney, which is considered one of the most efficient smoothing algorithms to date.
 
 The App
 ========================================================
 
-My overall design goal for [this app](https://floweffect.shinyapps.io/Next_Word_Prediction/)  was to create a lightweight, fast and memory efficient app that is flexible enough to be displayed properly on a wide range of devices.
+The overall design goal for [my app](https://floweffect.shinyapps.io/Next_Word_Prediction/)  was to create a lightweight, fast and memory efficient app that is flexible enough to be displayed properly on a wide range of devices.
 
-![](appexample.png)
+![](appexample.png)  
+How it works:
 
-All you have to do is enter a piece of text into the text field, press the button and the app produces the three most likely predictions based on the text and the underlying model. Since common words seem slightly overrepresented some of the time, I have also added the top three prediction which are not stopwords, like "the", "is" or "at".
+1. Enter text into the textbox and press the button
+2. The app shows the three most likely predictions with and without stopwords ranked by algorithm score
 
 Additional Information & Links
 ========================================================

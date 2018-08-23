@@ -24,14 +24,14 @@ shinyUI(fluidPage(
   # grid layout
   
   fluidRow(column(
-    10, offset = 1,
+    6, offset = 3,
     align = "center",
     wellPanel(
-      textInput("predtext", "Enter text here:", width = "60%"),
+      textInput("predtext", "Enter text here:", width = "90%"),
       actionButton("predButton", "Predict next word!")
     ),
     
-    column(8,offset = 2,
+    column(10,offset = 1,
     splitLayout(
       conditionalPanel("input.predButton",
                        wellPanel(

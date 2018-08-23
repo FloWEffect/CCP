@@ -1,0 +1,12 @@
+name: Next_Word_Prediction
+title: Next_Word_Prediction
+username:
+account: floweffect
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 406116
+bundleId: 1550641
+url: https://floweffect.shinyapps.io/Next_Word_Prediction/
+when: 1535032346.03846
+asMultiple: FALSE
+asStatic: FALSE
